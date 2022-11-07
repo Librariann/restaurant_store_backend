@@ -1,13 +1,10 @@
-package com.restaurant.store.Restaurant.domain;
+package com.restaurant.store.restaurant.domain;
 
 import com.restaurant.store.common.domain.BaseEntity;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

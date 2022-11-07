@@ -1,4 +1,4 @@
-package com.restaurant.store.Restaurant.dto;
+package com.restaurant.store.restaurant.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

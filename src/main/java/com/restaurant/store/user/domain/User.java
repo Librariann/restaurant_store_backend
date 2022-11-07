@@ -1,4 +1,4 @@
-package com.restaurant.store.User.domain;
+package com.restaurant.store.user.domain;
 
 import com.restaurant.store.common.domain.BaseEntity;
 import lombok.*;

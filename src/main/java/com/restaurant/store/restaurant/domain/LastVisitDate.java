@@ -1,11 +1,9 @@
-package com.restaurant.store.Restaurant.domain;
+package com.restaurant.store.restaurant.domain;
 
 import com.restaurant.store.common.domain.BaseEntity;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor

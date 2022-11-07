@@ -1,6 +1,5 @@
-package com.restaurant.store.User.dto;
+package com.restaurant.store.user.dto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

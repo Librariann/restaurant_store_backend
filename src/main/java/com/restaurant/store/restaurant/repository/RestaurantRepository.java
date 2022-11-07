@@ -1,6 +1,6 @@
-package com.restaurant.store.Restaurant.repository;
+package com.restaurant.store.restaurant.repository;
 
-import com.restaurant.store.Restaurant.domain.Restaurant;
+import com.restaurant.store.restaurant.domain.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

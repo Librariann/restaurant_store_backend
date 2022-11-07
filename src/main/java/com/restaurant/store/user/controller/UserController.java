@@ -1,17 +1,14 @@
-package com.restaurant.store.User.controller;
+package com.restaurant.store.user.controller;
 
-import com.restaurant.store.User.domain.User;
-import com.restaurant.store.User.dto.FindUser;
-import com.restaurant.store.User.dto.UserJoin;
-import com.restaurant.store.User.service.UserService;
+import com.restaurant.store.user.domain.User;
+import com.restaurant.store.user.dto.UserJoin;
+import com.restaurant.store.user.service.UserService;
 import com.restaurant.store.common.ResponseMessage;
 import com.restaurant.store.common.StatusCode;
 import com.restaurant.store.common.dto.CommonRes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController

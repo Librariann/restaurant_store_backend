@@ -1,9 +1,8 @@
-package com.restaurant.store.User.service;
+package com.restaurant.store.user.service;
 
-import com.restaurant.store.User.domain.User;
-import com.restaurant.store.User.dto.FindUser;
-import com.restaurant.store.User.dto.UserJoin;
-import com.restaurant.store.User.repository.UserRepository;
+import com.restaurant.store.user.domain.User;
+import com.restaurant.store.user.dto.UserJoin;
+import com.restaurant.store.user.repository.UserRepository;
 import com.restaurant.store.common.ResponseMessage;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
@@ -12,7 +11,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.Date;
