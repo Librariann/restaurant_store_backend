@@ -1,4 +1,4 @@
-package com.restaurant.store.common.entity;
+package com.restaurant.store.common.domain;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
