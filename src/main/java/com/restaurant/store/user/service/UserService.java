@@ -10,8 +10,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +27,14 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     public void createAccount(UserJoin userJoin) {
+        System.out.println(userJoin);
         User saveUser = userJoin.toEntity();
+        String encodePassword = passwordEncoder.encode(saveUser.getPassword());
+        saveUser.setPassword(encodePassword);
         userRepository.save(saveUser);
     }
 
@@ -56,9 +62,7 @@ public class UserService {
                 .parseClaimsJws(authorizationHeader) // (4)
                 .getBody();
     }
-
     public Optional<User> findUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
         return userRepository.findById(id);
     }
 

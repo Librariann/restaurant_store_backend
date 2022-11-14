@@ -1,5 +1,6 @@
 package com.restaurant.store.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.restaurant.store.common.domain.BaseEntity;
 import lombok.*;
 
@@ -26,4 +27,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @NonNull
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole userRole;
 }
+
+

@@ -2,20 +2,23 @@ package com.restaurant.store.user.controller;
 
 import com.restaurant.store.user.domain.User;
 import com.restaurant.store.user.dto.UserJoin;
+import com.restaurant.store.user.dto.UserProfile;
 import com.restaurant.store.user.service.UserService;
 import com.restaurant.store.common.ResponseMessage;
 import com.restaurant.store.common.StatusCode;
 import com.restaurant.store.common.dto.CommonRes;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/")
     public ResponseEntity<CommonRes<User>> createAccount(@RequestBody UserJoin userJoin) {
@@ -23,13 +26,6 @@ public class UserController {
 
 
         userService.createAccount(userJoin);
-        String jwt = userService.makeJwtToken();
-
-        System.out.println(jwt);
-
-        var parseJwt = userService.parseJwtToken(jwt);
-
-        System.out.println(parseJwt);
 
         commonRes.setStatusCode(StatusCode.OK);
         commonRes.setResponseMessage(ResponseMessage.JOIN_SUCCESS);
@@ -45,7 +41,7 @@ public class UserController {
 
         CommonRes<Optional<User>> commonRes = new CommonRes<>();
         commonRes.setStatusCode(StatusCode.OK);
-        commonRes.setResponseMessage(ResponseMessage.JOIN_SUCCESS);
+        commonRes.setResponseMessage(ResponseMessage.USER_FIND_SUCCESS);
         commonRes.setData(user);
 
         return ResponseEntity
@@ -58,7 +54,7 @@ public class UserController {
         CommonRes<String> commonRes = new CommonRes<>();
 
         String result = userService.deleteUser(id);
-        commonRes.setStatusCode(StatusCode.OK);
+        commonRes.setStatusCode(ResponseMessage.DELETE_SUCCESS.equals(result) ? StatusCode.OK : StatusCode.NOT_FOUND);
         commonRes.setResponseMessage(result);
         return ResponseEntity
                 .ok()
