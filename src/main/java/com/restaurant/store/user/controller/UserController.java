@@ -37,16 +37,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CommonRes<Optional<User>>> findUser(@PathVariable Long id) {
-        Optional<User> user = userService.findUser(id);
+        CommonRes<Optional<User>> user = userService.findUser(id);
 
-        CommonRes<Optional<User>> commonRes = new CommonRes<>();
-        commonRes.setStatusCode(StatusCode.OK);
-        commonRes.setResponseMessage(ResponseMessage.USER_FIND_SUCCESS);
-        commonRes.setData(user);
+
 
         return ResponseEntity
                 .ok()
-                .body(commonRes);
+                .body(user);
     }
 
     @DeleteMapping("/{id}")

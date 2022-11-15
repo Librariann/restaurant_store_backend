@@ -1,5 +1,7 @@
 package com.restaurant.store.user.service;
 
+import com.restaurant.store.common.StatusCode;
+import com.restaurant.store.common.dto.CommonRes;
 import com.restaurant.store.user.domain.User;
 import com.restaurant.store.user.dto.UserJoin;
 import com.restaurant.store.user.repository.UserRepository;
@@ -38,36 +40,28 @@ public class UserService {
         userRepository.save(saveUser);
     }
 
-    public String makeJwtToken() {
-        Date now = new Date();
 
-        return Jwts.builder()
-                .addClaims(
-                        Map.of("name", "Librarian", "price", 3000)
-                )
-                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
-                .setIssuer("fresh") // (2)
-                .setIssuedAt(now) // (3)
-                .setExpiration(new Date(now.getTime() + Duration.ofMinutes(30).toMillis())) // (4)
-                .claim("id", "아이디") // (5)
-                .claim("email", "ajufresh@gmail.com")
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // (6)
-                .compact();
-    }
+    public CommonRes<Optional<User>> findUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
 
-    public Claims parseJwtToken(String authorizationHeader) {
+        CommonRes<Optional<User>> commonRes = new CommonRes<>();
 
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY) // (3)
-                .parseClaimsJws(authorizationHeader) // (4)
-                .getBody();
-    }
-    public Optional<User> findUser(Long id) {
-        return userRepository.findById(id);
+        if(user.isEmpty()) {
+            commonRes.setStatusCode(StatusCode.NOT_FOUND);
+            commonRes.setResponseMessage(ResponseMessage.USER_FIND_FAIL);
+            commonRes.setData(user);
+            return commonRes;
+        }
+
+        commonRes.setStatusCode(StatusCode.OK);
+        commonRes.setResponseMessage(ResponseMessage.USER_FIND_SUCCESS);
+        commonRes.setData(user);
+
+        return commonRes;
     }
 
     public String deleteUser(Long id) {
-        Optional<User> user = findUser(id);
+        Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
             return ResponseMessage.DELETE_FAIL;
         }
