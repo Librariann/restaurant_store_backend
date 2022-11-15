@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -25,25 +26,25 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
+    @InjectMocks
+    UserService userService;
     @Mock
     UserRepository userRepository;
 
-    @InjectMocks
-    private UserService userService;
+    long findId = 1L;
 
     @Test
     @DisplayName("유저찾기 실패")
     public void userFindFail() throws Exception {
-        CommonRes<Optional<User>> commonRes = new CommonRes<>();
-        long findId = 1L;
-        when(userRepository.findById(findId)).thenReturn(Optional.empty());
 
-        CommonRes<Optional<User>> result = userService.findUser(1L);
+        given(userRepository.findById(findId)).willReturn(Optional.empty());
+        CommonRes<Optional<User>> commonRes = new CommonRes<>();
         commonRes.setStatusCode(StatusCode.NOT_FOUND);
         commonRes.setResponseMessage(ResponseMessage.USER_FIND_FAIL);
         commonRes.setData(Optional.empty());
 
-        //then
+        CommonRes<Optional<User>> result = userService.findUser(1L);
+
         verify(userRepository, times(1)).findById(findId);
         assertThat(result, is(commonRes));
     }
@@ -51,20 +52,19 @@ public class UserServiceTest {
     @Test
     @DisplayName("유저찾기 성공")
     public void userFindSuccess() throws Exception {
-        CommonRes<Optional<User>> commonRes = new CommonRes<>();
 
-        long findId = 1L;
         User user = User.builder()
                 .id(1L)
                 .userId("testId")
                 .password("1111")
                 .userRole(UserRole.ADMIN).build();
-        when(userRepository.findById(any())).thenReturn(Optional.of(user));
-
-        CommonRes<Optional<User>> result = userService.findUser(findId);
+        given(userRepository.findById(any())).willReturn(Optional.of(user));
+        CommonRes<Optional<User>> commonRes = new CommonRes<>();
         commonRes.setStatusCode(StatusCode.OK);
         commonRes.setResponseMessage(ResponseMessage.USER_FIND_SUCCESS);
         commonRes.setData(Optional.of(user));
+
+        CommonRes<Optional<User>> result = userService.findUser(findId);
 
         verify(userRepository, times(1)).findById(findId);
         assertThat(result, is(commonRes));

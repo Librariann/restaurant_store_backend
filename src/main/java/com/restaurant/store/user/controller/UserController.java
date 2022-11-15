@@ -39,8 +39,6 @@ public class UserController {
     public ResponseEntity<CommonRes<Optional<User>>> findUser(@PathVariable Long id) {
         CommonRes<Optional<User>> user = userService.findUser(id);
 
-
-
         return ResponseEntity
                 .ok()
                 .body(user);
