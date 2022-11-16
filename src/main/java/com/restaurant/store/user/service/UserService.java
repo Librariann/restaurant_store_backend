@@ -32,12 +32,25 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public void createAccount(UserJoin userJoin) {
-        System.out.println(userJoin);
-        User saveUser = userJoin.toEntity();
-        String encodePassword = passwordEncoder.encode(saveUser.getPassword());
-        saveUser.setPassword(encodePassword);
-        userRepository.save(saveUser);
+    public CommonRes<User> createAccount(UserJoin userJoin) {
+            Optional<User> user = userRepository.findByUserId(userJoin.getUserId());
+            CommonRes<User> commonRes = new CommonRes<User>();
+
+            //이미 생성된 아이디가 존재 할 때
+            if (user.isPresent()) {
+                commonRes.setStatusCode(StatusCode.BAD_REQUEST);
+                commonRes.setResponseMessage(ResponseMessage.USER_OVERLAP);
+                return commonRes;
+            }
+
+            User saveUser = userJoin.toEntity();
+            saveUser.setPassword(passwordEncoder.encode(saveUser.getPassword()));
+            userRepository.save(saveUser);
+
+            commonRes.setStatusCode(StatusCode.OK);
+            commonRes.setResponseMessage(ResponseMessage.JOIN_SUCCESS);
+
+            return commonRes;
     }
 
 
@@ -49,7 +62,6 @@ public class UserService {
         if(user.isEmpty()) {
             commonRes.setStatusCode(StatusCode.NOT_FOUND);
             commonRes.setResponseMessage(ResponseMessage.USER_FIND_FAIL);
-            commonRes.setData(user);
             return commonRes;
         }
 

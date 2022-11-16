@@ -22,17 +22,12 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<CommonRes<User>> createAccount(@RequestBody UserJoin userJoin) {
-        CommonRes<User> commonRes = new CommonRes<User>();
 
-
-        userService.createAccount(userJoin);
-
-        commonRes.setStatusCode(StatusCode.OK);
-        commonRes.setResponseMessage(ResponseMessage.JOIN_SUCCESS);
+        CommonRes<User> result = userService.createAccount(userJoin);
 
         return ResponseEntity
                 .ok()
-                .body(commonRes);
+                .body(result);
     }
 
     @GetMapping("/{id}")

@@ -3,6 +3,8 @@ package com.restaurant.store.user.domain;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.restaurant.store.common.domain.BaseEntity;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
