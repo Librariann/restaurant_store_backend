@@ -144,6 +144,7 @@ public class UserServiceTest {
         @Test
         @DisplayName("유저가 없어서 삭제 실패")
         public void deleteUserFail() throws Exception {
+
             given(userRepository.findById(findId)).willReturn(Optional.empty());
 
             CommonRes<Optional<User>> commonRes = new CommonRes<>();
@@ -160,6 +161,7 @@ public class UserServiceTest {
         @Test
         @DisplayName("유저 삭제 성공")
         public void deleteUserSuccess() throws Exception {
+
             given(userRepository.findById(any())).willReturn(Optional.of(user));
 
             CommonRes<Optional<User>> commonRes = new CommonRes<>();
