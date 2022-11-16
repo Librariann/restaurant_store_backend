@@ -43,12 +43,10 @@ public class UserController {
     public ResponseEntity<CommonRes<String>> DeleteUser(@PathVariable Long id) {
         CommonRes<String> commonRes = new CommonRes<>();
 
-        String result = userService.deleteUser(id);
-        commonRes.setStatusCode(ResponseMessage.DELETE_SUCCESS.equals(result) ? StatusCode.OK : StatusCode.NOT_FOUND);
-        commonRes.setResponseMessage(result);
+        CommonRes result = userService.deleteUser(id);
         return ResponseEntity
                 .ok()
-                .body(commonRes);
+                .body(result);
     }
 
 //    @PostMapping("/login")
