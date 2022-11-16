@@ -58,6 +58,7 @@ public class UserServiceTest {
     @Nested
     @DisplayName("계정생성")
     class CreateUser {
+
         @Test
         @DisplayName("중복된 유저명으로 인한 계정생성 실패")
         public void createUserFail() throws Exception {
@@ -72,6 +73,8 @@ public class UserServiceTest {
             CommonRes<User> result = userService.createAccount(userJoin);
 
             verify(userRepository, times(1)).findByUserId(any());
+            verify(userRepository, times(0)).save(any());
+
             assertThat(result, is(commonRes));
         }
 
@@ -96,37 +99,83 @@ public class UserServiceTest {
         }
     }
 
-    @Test
-    @DisplayName("유저찾기 실패")
-    public void findUserFail() throws Exception {
+    @Nested
+    @DisplayName("유저 검색")
+    class FindUser {
 
-        given(userRepository.findById(findId)).willReturn(Optional.empty());
+        @Test
+        @DisplayName("유저검색 실패")
+        public void findUserFail() throws Exception {
 
-        CommonRes<Optional<User>> commonRes = new CommonRes<>();
-        commonRes.setStatusCode(StatusCode.NOT_FOUND);
-        commonRes.setResponseMessage(ResponseMessage.USER_FIND_FAIL);
-        commonRes.setData(null);
+            given(userRepository.findById(findId)).willReturn(Optional.empty());
 
-        CommonRes<Optional<User>> result = userService.findUser(1L);
+            CommonRes<Optional<User>> commonRes = new CommonRes<>();
+            commonRes.setStatusCode(StatusCode.NOT_FOUND);
+            commonRes.setResponseMessage(ResponseMessage.USER_FIND_FAIL);
+            commonRes.setData(null);
 
-        verify(userRepository, times(1)).findById(findId);
-        assertThat(result, is(commonRes));
+            CommonRes<Optional<User>> result = userService.findUser(1L);
+
+            verify(userRepository, times(1)).findById(findId);
+            assertThat(result, is(commonRes));
+        }
+
+        @Test
+        @DisplayName("유저검색 성공")
+        public void findUserSuccess() throws Exception {
+
+            given(userRepository.findById(any())).willReturn(Optional.of(user));
+
+            CommonRes<Optional<User>> commonRes = new CommonRes<>();
+            commonRes.setStatusCode(StatusCode.OK);
+            commonRes.setResponseMessage(ResponseMessage.USER_FIND_SUCCESS);
+            commonRes.setData(Optional.of(user));
+
+            CommonRes<Optional<User>> result = userService.findUser(findId);
+
+            verify(userRepository, times(1)).findById(findId);
+            assertThat(result, is(commonRes));
+        }
     }
 
-    @Test
-    @DisplayName("유저찾기 성공")
-    public void findUserSuccess() throws Exception {
+    @Nested
+    @DisplayName("유저 삭제")
+    class DeleteUser {
+        @Test
+        @DisplayName("유저가 없어서 삭제 실패")
+        public void deleteUserFail() throws Exception {
+            given(userRepository.findById(findId)).willReturn(Optional.empty());
 
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
+            CommonRes<Optional<User>> commonRes = new CommonRes<>();
+            commonRes.setStatusCode(StatusCode.NOT_FOUND);
+            commonRes.setResponseMessage(ResponseMessage.DELETE_FAIL);
+            commonRes.setData(null);
 
-        CommonRes<Optional<User>> commonRes = new CommonRes<>();
-        commonRes.setStatusCode(StatusCode.OK);
-        commonRes.setResponseMessage(ResponseMessage.USER_FIND_SUCCESS);
-        commonRes.setData(Optional.of(user));
+            CommonRes result = userService.deleteUser(1L);
 
-        CommonRes<Optional<User>> result = userService.findUser(findId);
+            verify(userRepository, times(1)).findById(findId);
+            assertThat(result, is(commonRes));
+        }
 
-        verify(userRepository, times(1)).findById(findId);
-        assertThat(result, is(commonRes));
+        @Test
+        @DisplayName("유저 삭제 성공")
+        public void deleteUserSuccess() throws Exception {
+            given(userRepository.findById(any())).willReturn(Optional.of(user));
+
+            CommonRes<Optional<User>> commonRes = new CommonRes<>();
+            commonRes.setStatusCode(StatusCode.OK);
+            commonRes.setResponseMessage(ResponseMessage.DELETE_SUCCESS);
+            commonRes.setData(null);
+
+            CommonRes result = userService.deleteUser(1L);
+
+            verify(userRepository, times(1)).findById(any());
+            verify(userRepository, times(1)).deleteById(any());
+
+            assertThat(result, is(commonRes));
+
+        }
     }
+
+
 }
