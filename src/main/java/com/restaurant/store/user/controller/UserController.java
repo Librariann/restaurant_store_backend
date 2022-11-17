@@ -2,10 +2,7 @@ package com.restaurant.store.user.controller;
 
 import com.restaurant.store.user.domain.User;
 import com.restaurant.store.user.dto.UserJoin;
-import com.restaurant.store.user.dto.UserProfile;
 import com.restaurant.store.user.service.UserService;
-import com.restaurant.store.common.ResponseMessage;
-import com.restaurant.store.common.StatusCode;
 import com.restaurant.store.common.dto.CommonRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +38,8 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CommonRes<String>> DeleteUser(@PathVariable Long id) {
-        CommonRes<String> commonRes = new CommonRes<>();
 
-        CommonRes result = userService.deleteUser(id);
+        CommonRes<String> result = userService.deleteUser(id);
         return ResponseEntity
                 .ok()
                 .body(result);

@@ -72,10 +72,10 @@ public class UserService {
         return commonRes;
     }
 
-    public CommonRes deleteUser(Long id) {
+    public CommonRes<String> deleteUser(Long id) {
         Optional<User> user = userRepository.findById(id);
 
-        CommonRes commonRes = new CommonRes<>();
+        CommonRes<String> commonRes = new CommonRes<>();
 
         if(user.isEmpty()){
             commonRes.setStatusCode(StatusCode.NOT_FOUND);
