@@ -152,7 +152,7 @@ public class UserServiceTest {
             commonRes.setResponseMessage(ResponseMessage.DELETE_FAIL);
             commonRes.setData(null);
 
-            CommonRes result = userService.deleteUser(1L);
+            CommonRes<String> result = userService.deleteUser(1L);
 
             verify(userRepository, times(1)).findById(findId);
             assertThat(result, is(commonRes));
@@ -169,7 +169,7 @@ public class UserServiceTest {
             commonRes.setResponseMessage(ResponseMessage.DELETE_SUCCESS);
             commonRes.setData(null);
 
-            CommonRes result = userService.deleteUser(1L);
+            CommonRes<String> result = userService.deleteUser(1L);
 
             verify(userRepository, times(1)).findById(any());
             verify(userRepository, times(1)).deleteById(any());
