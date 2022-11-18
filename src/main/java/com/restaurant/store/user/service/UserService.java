@@ -32,7 +32,7 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public CommonRes<User> createAccount(UserJoin userJoin) {
+    public CommonRes<User> createUser(UserJoin userJoin) {
             Optional<User> user = userRepository.findByUserId(userJoin.getUserId());
             CommonRes<User> commonRes = new CommonRes<User>();
 
@@ -56,7 +56,6 @@ public class UserService {
 
     public CommonRes<Optional<User>> findUser(Long id) {
         Optional<User> user = userRepository.findById(id);
-
         CommonRes<Optional<User>> commonRes = new CommonRes<>();
 
         if(user.isEmpty()) {
@@ -74,7 +73,6 @@ public class UserService {
 
     public CommonRes<String> deleteUser(Long id) {
         Optional<User> user = userRepository.findById(id);
-
         CommonRes<String> commonRes = new CommonRes<>();
 
         if(user.isEmpty()){
@@ -87,9 +85,5 @@ public class UserService {
         commonRes.setStatusCode(StatusCode.OK);
         commonRes.setResponseMessage(ResponseMessage.DELETE_SUCCESS);
         return commonRes;
-    }
-
-    public List<User> findAllUser() {
-        return userRepository.findAll();
     }
 }
