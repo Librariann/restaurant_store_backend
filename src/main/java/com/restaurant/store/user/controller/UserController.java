@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CommonRes<String>> DeleteUser(@PathVariable Long id) {
+    public ResponseEntity<CommonRes<String>> deleteUser(@PathVariable Long id) {
         CommonRes<String> result = userService.deleteUser(id);
 
         return ResponseEntity
