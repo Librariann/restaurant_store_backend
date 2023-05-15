@@ -141,6 +141,7 @@ public class UserServiceTest {
     @Nested
     @DisplayName("유저 삭제")
     class DeleteUser {
+
         @Test
         @DisplayName("유저가 없어서 삭제 실패")
         public void deleteUserFail() throws Exception {
@@ -178,6 +179,5 @@ public class UserServiceTest {
 
         }
     }
-
 
 }
