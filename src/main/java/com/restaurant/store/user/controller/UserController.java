@@ -1,6 +1,7 @@
 package com.restaurant.store.user.controller;
 
 import com.restaurant.store.common.ResponseMessage;
+import com.restaurant.store.jwt.JwtToken;
 import com.restaurant.store.user.domain.User;
 import com.restaurant.store.user.dto.UserJoin;
 import com.restaurant.store.user.dto.login.LoginRequest;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -49,7 +50,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CommonRes<LoginResponse>> login(@RequestBody LoginRequest loginRequest) throws Exception {
+    public ResponseEntity<JwtToken> login(@RequestBody LoginRequest loginRequest) throws Exception {
+        JwtToken token = userService.login(loginRequest);
+
+        System.out.println(token);
         CommonRes<LoginResponse> result = userService.login(loginRequest);
 
         return ResponseEntity

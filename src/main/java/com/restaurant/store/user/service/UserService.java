@@ -31,8 +31,6 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    JwtProvider jwtProvider;
 
     public CommonRes<User> createUser(UserJoin userJoin) throws Exception {
 
