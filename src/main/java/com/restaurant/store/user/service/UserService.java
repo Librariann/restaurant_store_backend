@@ -2,27 +2,27 @@ package com.restaurant.store.user.service;
 
 import com.restaurant.store.common.StatusCode;
 import com.restaurant.store.common.dto.CommonRes;
-import com.restaurant.store.jwt.JwtProvider;
+import com.restaurant.store.jwt.JwtToken;
+import com.restaurant.store.jwt.JwtTokenProvider;
 import com.restaurant.store.user.domain.User;
 import com.restaurant.store.user.dto.UserJoin;
 import com.restaurant.store.user.dto.login.LoginRequest;
 import com.restaurant.store.user.dto.login.LoginResponse;
 import com.restaurant.store.user.repository.UserRepository;
 import com.restaurant.store.common.ResponseMessage;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.time.Duration;
-import java.util.*;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     @Autowired
@@ -30,6 +30,13 @@ public class UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+
 
 
     public CommonRes<User> createUser(UserJoin userJoin) throws Exception {
@@ -103,5 +110,15 @@ public class UserService {
         commonRes.setData(token);
 
         return commonRes;
+    }
+
+    public JwtToken tokenLogin(LoginRequest loginRequest) throws Exception {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUserId(), loginRequest.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        JwtToken token = jwtTokenProvider.generateToken(authentication);
+
+        return token;
+
     }
 }

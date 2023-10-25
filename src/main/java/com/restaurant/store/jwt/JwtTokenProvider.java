@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,12 +23,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class JwtTokenProvider {
-    private final Key key;
+    //@Value("${jwt.secret}")
+    String secretKey = "ajsndjasnd!@#!@#jansdjnasd@@@@123asjdnjasd!!";
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey){
-        byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
-        this.key = Keys.hmacShaKeyFor(secretByteKey);
-    }
+    byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
+
+    @Autowired
+    Key key = Keys.hmacShaKeyFor(secretByteKey);
 
     public JwtToken generateToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()

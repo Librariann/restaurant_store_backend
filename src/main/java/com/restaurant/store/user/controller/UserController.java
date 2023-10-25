@@ -50,11 +50,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtToken> login(@RequestBody LoginRequest loginRequest) throws Exception {
-        JwtToken token = userService.login(loginRequest);
+    public ResponseEntity<CommonRes<LoginResponse>> login(@RequestBody LoginRequest loginRequest) throws Exception {
+        CommonRes<LoginResponse> result = userService.login(loginRequest);
+
+        return ResponseEntity
+                .ok()
+                .body(result);
+    }
+
+    @PostMapping("/tokenLogin")
+    public ResponseEntity<JwtToken> tokenLogin(@RequestBody LoginRequest loginRequest) throws Exception {
+        JwtToken token = userService.tokenLogin(loginRequest);
 
         System.out.println(token);
-        CommonRes<LoginResponse> result = userService.login(loginRequest);
+        JwtToken result = userService.tokenLogin(loginRequest);
 
         return ResponseEntity
                 .ok()
